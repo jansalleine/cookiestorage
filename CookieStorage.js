@@ -34,7 +34,7 @@
         _.cookieArray   = _.cookie.split(';');
         _.cookieLen     = _.cookieArray.length;
         _.lifetime      = typeof(lifetime) === "number" ?
-                            parseInt(lifetime) : 31536000000;
+                            parseInt(lifetime) : 31536000;
         _.opts          = typeof(opts) === "string" ?
                             opts : "path=/;SameSite=Strict;Secure;";
 
