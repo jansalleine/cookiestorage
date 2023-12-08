@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CookieStorage.js Demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #ddd;
+            font-size: 18px;
+            margin: 0;
+            height: 100vh;
+            padding: 0;
+        }
+        h1 {
+            margin: 0 0 2.25rem;
+        }
+        input {
+            font-size: 18px;
+            margin: 0 0 1rem;
+        }
+        input#key,
+        input#value {
+            display: block;
+            max-width: 550px;
+            width: 100%;
+        }
+        #wrap {
+            background-color: #fff;
+            height: 100%;
+            margin: 0 auto;
+            max-width: 60em;
+            padding: 80px 20px;
+        }
+        #result {
+            background-color: #eee;
+            border-radius: 20px;
+            margin-top: 80px;
+            overflow-x: scroll;
+            padding: 1.4rem 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <h1>CookieStorage.js Demo</h1>
+        <form>
+            <input id="key" type="text" value="" placeholder="key">
+            <input id="value" type="text" value="" placeholder="value">
+            <input id="getsubmit" type="submit" value="getItem">
+            <input id="setsubmit" type="submit" value="setItem">
+            <input id="hassubmit" type="submit" value="hasItem">
+            <input id="remsubmit" type="submit" value="removeItem">
+            <input id="cookiedel" type="submit" value="delete Cookies">
+        </form>
+        <pre id="result"></pre>
+    </div>
+    <script src="../CookieStorage.js"></script>
+    <script>
+        var keyInput = document.getElementById("key"),
+            valInput = document.getElementById("value"),
+            setBtn   = document.getElementById("setsubmit"),
+            getBtn   = document.getElementById("getsubmit"),
+            hasBtn   = document.getElementById("hassubmit"),
+            remBtn   = document.getElementById("remsubmit"),
+            delBtn   = document.getElementById("cookiedel"),
+            buttons  = [setBtn, getBtn, hasBtn, remBtn, delBtn],
+            resOut   = document.getElementById("result"),
+            result   = false;
+
+        buttons.forEach(function (elem, index)
+        {
+            elem.addEventListener("click", function (e)
+            {
+                e.preventDefault();
+
+                result = false;
+
+                switch (index)
+                {
+                    case 0:
+                        cookieStorage.setItem(
+                            String(keyInput.value), String(valInput.value)
+                        );
+                        result = true;
+                        break;
+                    case 1:
+                        result = cookieStorage.getItem(
+                            String(keyInput.value)
+                        );
+                        break;
+                    case 2:
+                        result = cookieStorage.hasItem(
+                            String(keyInput.value)
+                        );
+                        break;
+                    case 3:
+                        result = cookieStorage.removeItem(
+                            String(keyInput.value)
+                        );
+                        break;
+                    case 4:
+                        cookieStorage.removeAll();
+                        result = "All Cookies removed.";
+                        break;
+                    default:
+                        break;
+                }
+
+                resOut.innerHTML = "";
+                resOut.innerHTML += "document.cookie: " + document.cookie + "\n\n";
+                resOut.innerHTML += "result: " + String(result) + "\n\n";
+            });
+        });
+    </script>
+</body>
+</html>

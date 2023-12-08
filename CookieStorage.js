@@ -31,7 +31,7 @@
         var _ = this;
 
         _.cookie        = document.cookie;
-        _.cookieArray   = _.cookie.split(';');
+        _.cookieArray   = _.cookie.split(";");
         _.cookieLen     = _.cookieArray.length;
         _.lifetime      = typeof(lifetime) === "number" ?
                             parseInt(lifetime) : 31536000;
@@ -57,18 +57,6 @@
             return value;
         };
 
-        _.setItem = function (identifier, value)
-        {
-            if (typeof(identifier) !== "string") return;
-            if (typeof(value) !== "string") return;
-
-            _.refresh();
-
-            var ageStr = "Max-Age=" + _.lifetime;
-
-            document.cookie = identifier + "=" + value + ";" + ageStr + ";" + _.opts;
-        };
-
         _.hasItem = function (identifier)
         {
             return !(_.getItem(identifier) === null);
@@ -79,6 +67,46 @@
             _.cookie        = document.cookie;
             _.cookieArray   = _.cookie.split(';');
             _.cookieLen     = _.cookieArray.length;
+        };
+
+        _.removeAll = function ()
+        {
+            _.refresh();
+
+            _.cookieArray.forEach(function (elem)
+            {
+                if (elem.charAt(0) == " ") elem = elem.substring(1);
+
+                var identifier = elem.split("=")[0];
+
+                _.removeItem(identifier);
+            });
+        };
+
+        _.removeItem = function (identifier)
+        {
+            if (typeof(identifier) !== "string") return;
+
+            var ageStr = "Max-Age=0",
+                value = "";
+
+            document.cookie =
+                identifier + "=" + value + ";" + ageStr + ";" + _.opts;
+
+            return _.getItem(identifier);
+        };
+
+        _.setItem = function (identifier, value)
+        {
+            if (typeof(identifier) !== "string") return;
+            if (typeof(value) !== "string") return;
+
+            _.refresh();
+
+            var ageStr = "Max-Age=" + _.lifetime;
+
+            document.cookie =
+                identifier + "=" + value + ";" + ageStr + ";" + _.opts;
         };
     };
 
